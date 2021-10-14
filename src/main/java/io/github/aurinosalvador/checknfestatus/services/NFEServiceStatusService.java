@@ -18,7 +18,7 @@ public class NFEServiceStatusService {
     @Autowired
     NFEServiceStatusRepository nfeRepository;
 
-    @GetMapping("")
+    @GetMapping("/")
     public List<NFEServiceStatus> getAllNfeServiceStatus() {
         return nfeRepository.findAll();
     }
@@ -28,7 +28,7 @@ public class NFEServiceStatusService {
         return nfeRepository.findById(id).get();
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     public NFEServiceStatus saveNfeServiceStatus(@RequestBody NFEServiceStatus nfeServiceStatus) {
         return nfeRepository.save(nfeServiceStatus);
     }

@@ -5,6 +5,9 @@ import io.github.aurinosalvador.checknfestatus.repositories.NFEServiceStatusRepo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +49,13 @@ public class NFEServiceStatusService {
     @GetMapping("/status/{state}/{service}")
     public List<NFEServiceStatus> getStatusByService(@PathVariable String state, @PathVariable String service) {
         return nfeRepository.getStatusByStateService(state, service);
+    }
+
+    @GetMapping("/status/{state}/{dateStart}/{dateEnd}")
+    public List<NFEServiceStatus> getStatusByDate(@PathVariable String state, @PathVariable String dateStart, @PathVariable String dateEnd) {
+        Date initialDate = Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(dateStart)));
+        Date finishDate = Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(dateEnd)));
+        return nfeRepository.findByStateAndUpdatedAtBetweenOrderByUpdatedAt(state, initialDate, finishDate);
     }
 
 }

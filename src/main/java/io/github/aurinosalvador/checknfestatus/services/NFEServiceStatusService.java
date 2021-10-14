@@ -38,4 +38,9 @@ public class NFEServiceStatusService {
         nfeRepository.deleteById(id);
     }
 
+    @GetMapping("/status/{state}")
+    public List<NFEServiceStatus> getLastStatusByState(@PathVariable String state) {
+        return nfeRepository.getLastStatusState(state);
+    }
+
 }

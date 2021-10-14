@@ -16,4 +16,8 @@ public interface NFEServiceStatusRepository extends JpaRepository<NFEServiceStat
             "(select max(updated_at) from sys_nfe_status where state = ?1)", nativeQuery = true)
     List<NFEServiceStatus> getLastStatusState(String state);
 
+    @Query(value = "select * from sys_nfe_status where state = ?1 and service = ?2 and updated_at = " +
+            "(select max(updated_at) from sys_nfe_status where state = ?1)", nativeQuery = true)
+    List<NFEServiceStatus> getStatusByStateService(String state, String service);
+
 }

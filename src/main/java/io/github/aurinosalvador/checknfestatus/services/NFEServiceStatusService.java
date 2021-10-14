@@ -43,4 +43,9 @@ public class NFEServiceStatusService {
         return nfeRepository.getLastStatusState(state);
     }
 
+    @GetMapping("/status/{state}/{service}")
+    public List<NFEServiceStatus> getStatusByService(@PathVariable String state, @PathVariable String service) {
+        return nfeRepository.getStatusByStateService(state, service);
+    }
+
 }

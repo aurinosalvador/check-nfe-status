@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Aurino Salvador
@@ -23,5 +24,9 @@ public interface NFEServiceStatusRepository extends JpaRepository<NFEServiceStat
 
     List<NFEServiceStatus> findByStateAndUpdatedAtBetweenOrderByUpdatedAt(String state, Date initialDate, Date finishDate);
 
+    @Query(value = "select state, count(service) from sys_nfe_status where " +
+            "status = 'red' and status != 'Don''t match!' " +
+            "group  by 1 order by 2 desc limit 1", nativeQuery = true)
+    Map<String, Object> getUnavailable();
 
 }

@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Aurino Salvador
@@ -56,6 +57,11 @@ public class NFEServiceStatusService {
         Date initialDate = Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(dateStart)));
         Date finishDate = Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(dateEnd)));
         return nfeRepository.findByStateAndUpdatedAtBetweenOrderByUpdatedAt(state, initialDate, finishDate);
+    }
+
+    @GetMapping("/status/unavailable")
+    public Map<String, Object> getUnavailable() {
+        return nfeRepository.getUnavailable();
     }
 
 }

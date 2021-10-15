@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Aurino Salvador
  */
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/nfe")
 public class NFEServiceStatusService {
 
@@ -23,8 +22,19 @@ public class NFEServiceStatusService {
     NFEServiceStatusRepository nfeRepository;
 
     @GetMapping("/")
-    public List<NFEServiceStatus> getAllNfeServiceStatus() {
-        return nfeRepository.findAll();
+    public List<Map<String, Object>> getAllNfeServiceStatus() {
+        List<String> states = nfeRepository.getStates();
+        List<Map<String, Object>> ret = new ArrayList<>();
+        for(String state : states){
+            List<NFEServiceStatus> statuses = nfeRepository.getLastStatusState(state);
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("state", state);
+            for(NFEServiceStatus status : statuses){
+                attributes.put(status.getService(), status.getStatus());
+            }
+            ret.add(attributes);
+        }
+        return ret;
     }
 
     @GetMapping("/{id}")

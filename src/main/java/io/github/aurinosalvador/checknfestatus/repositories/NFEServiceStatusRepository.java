@@ -14,6 +14,12 @@ import java.util.Map;
 
 public interface NFEServiceStatusRepository extends JpaRepository<NFEServiceStatus, Long> {
 
+    @Query(value = "select state from sys_nfe_status group by 1", nativeQuery = true)
+    List<String> getStates();
+
+    @Query(value = "select * from sys_nfe_status where updated_at = (select max(updated_at) from sys_nfe_status)", nativeQuery = true)
+    List<NFEServiceStatus> getAllLastStatus();
+
     @Query(value = "select * from sys_nfe_status where state = ?1 and updated_at = " +
             "(select max(updated_at) from sys_nfe_status where state = ?1)", nativeQuery = true)
     List<NFEServiceStatus> getLastStatusState(String state);
